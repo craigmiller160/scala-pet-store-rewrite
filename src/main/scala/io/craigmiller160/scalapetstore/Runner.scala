@@ -1,24 +1,23 @@
 package io.craigmiller160.scalapetstore
 
+import cats.effect.kernel.Sync
+import cats.effect.{ExitCode, IO, IOApp, Resource}
 import io.craigmiller160.scalapetstore.config._
-import io.circe.parser
 import io.circe.config.{parser => configParser}
 import io.craigmiller160.scalapetstore.config.AppConfig
+import cats.effect._
 
-import java.io.{BufferedReader, InputStreamReader}
-import java.util.stream.Collectors
-
-object Runner extends App {
-  println("V1 Approach")
-  val stream = getClass.getClassLoader.getResourceAsStream("application.json")
-  val text = new BufferedReader(new InputStreamReader(stream)).lines().collect(Collectors.joining("\n"))
-  parser.parse(text)
-    .flatMap(_.as[AppConfig])
-    .foreach(config => println(config))
-
-  println("V2 Approach")
+object Runner extends IOApp {
   configParser.decodePath[AppConfig]("petstore") match {
     case Right(value) => println(value)
     case Left(ex) => ex.printStackTrace()
   }
+
+  override def run(args: List[String]): IO[ExitCode] =
+    createServer[IO].use(_ => IO.never).as(ExitCode.Success)
+
+  private def createServer[F[_]: Sync]: Resource[F, Any] =
+    for {
+      appConfig <- Resource.eval(configParser.decodePath[AppConfig]("petstore"))
+    } yield appConfig
 }
