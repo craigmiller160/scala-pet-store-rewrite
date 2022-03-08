@@ -16,8 +16,8 @@ object Runner extends IOApp {
   override def run(args: List[String]): IO[ExitCode] =
     createServer[IO].use(_ => IO.never).as(ExitCode.Success)
 
-  private def createServer[F[_]: Sync]: Resource[F, Any] =
+  private def createServer[F[_]: Sync]: Resource[F, AppConfig] =
     for {
-      appConfig <- Resource.eval(configParser.decodePath[AppConfig]("petstore"))
+      appConfig <- Resource.eval(configParser.decodePathF[F, AppConfig]("petstore"))
     } yield appConfig
 }
