@@ -13,5 +13,6 @@ object Runner extends IOApp {
     for {
       appConfig <- Resource.eval(configParser.decodePathF[F, AppConfig]("petstore"))
       execCtxConfig <- ExecContextConfig.executionContexts[F](appConfig)
+      dbTransactor <- DatabaseConfig.dbTransactor[F](appConfig.db, execCtxConfig.dbCtx)
     } yield appConfig
 }
