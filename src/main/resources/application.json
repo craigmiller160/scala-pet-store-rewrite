@@ -1,8 +1,0 @@
-{
-  "db": {
-    "url": "jdbc:postgresql://localhost:5432/postgres",
-    "driver": "org.postgresql.Driver",
-    "user": "user",
-    "password": "password"
-  }
-}
