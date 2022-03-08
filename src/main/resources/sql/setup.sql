@@ -22,11 +22,9 @@ CREATE TABLE USERS (
                        FIRST_NAME VARCHAR NOT NULL,
                        LAST_NAME VARCHAR NOT NULL,
                        EMAIL VARCHAR NOT NULL,
-                       PASSWORD VARCHAR NOT NULL,
+                       HASH VARCHAR NOT NULL,
                        PHONE VARCHAR NOT NULL
 );
-
-ALTER TABLE USERS ALTER COLUMN PASSWORD RENAME TO HASH;
 
 CREATE TABLE JWT (
                      ID VARCHAR PRIMARY KEY,
