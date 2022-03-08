@@ -9,8 +9,7 @@ case class DatabaseConfig(
                            url: String,
                            driver: String,
                            user: String,
-                           password: String,
-                           connections: DatabaseConnectionsConfig,
+                           password: String
                          )
 object DatabaseConfig {
   def dbTransactor[F[_]: Async](config: DatabaseConfig,

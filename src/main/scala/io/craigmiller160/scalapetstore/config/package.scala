@@ -1,5 +1,9 @@
 package io.craigmiller160.scalapetstore
 
-package object config {
+import io.circe.Decoder
+import io.circe.generic.semiauto._
 
+package object config {
+  implicit val appConfigDecoder: Decoder[AppConfig] = deriveDecoder
+  implicit val dbConfigDecoder: Decoder[DatabaseConfig] = deriveDecoder
 }
